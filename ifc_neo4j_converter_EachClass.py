@@ -2,8 +2,12 @@ import ifcopenshell
 import sys
 from py2neo import Graph, Node
 import time
+import os
 
-
+neo4j_username=os.getenv("NEO4J_USERNAME", "neo4j")
+neo4j_password=os.getenv("NEO4J_PASSWORD", "Neo4j")
+neo4j_uri=os.getenv("NEO4J_URI", "http://localhost:7474")
+print (neo4j_uri,neo4j_username, neo4j_password)
 def typeDict(key):
     f = ifcopenshell.file()
     value = f.create_entity(key).wrapped_data.get_attribute_names()
@@ -94,7 +98,7 @@ log2 = str(round(time.time() - start)) + "sec.\n" + \
     str(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime()))) + " List creat prosess done"
 
 # Initialize neo4j database
-graph = Graph(auth=('neo4j', 'Neo4j'))  # http://localhost:7474
+graph = Graph( uri=neo4j_uri,auth=(neo4j_username, neo4j_password))  # http://localhost:7474
 graph.delete_all()
 
 for node in nodes:
