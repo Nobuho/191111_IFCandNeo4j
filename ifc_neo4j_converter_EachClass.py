@@ -9,7 +9,7 @@ neo4j_password=os.getenv("NEO4J_PASSWORD", "Neo4j")
 neo4j_uri=os.getenv("NEO4J_URI", "http://localhost:7474")
 print (neo4j_uri,neo4j_username, neo4j_password)
 def typeDict(key):
-    f = ifcopenshell.file()
+#    f = ifcopenshell.file()
     value = f.create_entity(key).wrapped_data.get_attribute_names()
     return value
 
@@ -28,7 +28,6 @@ nodes = []
 edges = []
 
 f = ifcopenshell.open(ifc_path)
-
 for el in f:
     if el.is_a() == "IfcOwnerHistory":
         continue
