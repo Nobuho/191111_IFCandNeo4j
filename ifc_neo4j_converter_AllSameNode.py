@@ -2,8 +2,11 @@ import ifcopenshell
 import sys
 from py2neo import Graph, Node
 import time
+import os
 
-
+neo4j_username=os.getenv("NEO4J_USERNAME", "neo4j")
+neo4j_password=os.getenv("NEO4J_PASSWORD", "Neo4j")
+neo4j_uri=os.getenv("NEO4J_URI", "http://localhost:7474")
 def typeDict(key):
     f = ifcopenshell.file()
     value = f.create_entity(key).wrapped_data.get_attribute_names()
@@ -75,7 +78,7 @@ print("List creat prosess done. Take for ", time.time() - start)
 print(time.strftime("%Y/%m/%d %H:%M", time.strptime(time.ctime())))
 
 # Initialize neo4j database
-graph = Graph(auth=('neo4j', 'Neo4j'))  # http://localhost:7474
+graph = Graph( uri=neo4j_uri,auth=(neo4j_username, neo4j_password))  # http://localhost:7474
 graph.delete_all()
 
 for node in nodes:
@@ -85,7 +88,7 @@ for node in nodes:
         one_node[k] = v
     graph.create(one_node)
 
-graph.run("CREATE INDEX ON :IfcNode(nid)")
+graph.run("CREATE INDEX index_name FOR (n:IfcNode) ON (n.nid)")
 
 print("Node creat prosess done. Take for ", time.time() - start)
 print(time.strftime("%Y/%m/%d %H:%M", time.strptime(time.ctime())))

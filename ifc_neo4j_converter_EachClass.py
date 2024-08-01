@@ -2,10 +2,14 @@ import ifcopenshell
 import sys
 from py2neo import Graph, Node
 import time
+import os
 
-
+neo4j_username=os.getenv("NEO4J_USERNAME", "neo4j")
+neo4j_password=os.getenv("NEO4J_PASSWORD", "neo4j")
+neo4j_uri=os.getenv("NEO4J_URI", "bolt://localhost:7687")
+print (neo4j_uri,neo4j_username, neo4j_password)
 def typeDict(key):
-    f = ifcopenshell.file()
+#    f = ifcopenshell.file()
     value = f.create_entity(key).wrapped_data.get_attribute_names()
     return value
 
@@ -13,7 +17,8 @@ def typeDict(key):
 start = time.time()  # Culculate time to process
 
 
-ifc_path = "ifc_files/IfcOpenHouse_original.ifc"
+ifc_path = "ifc_files/ronen_Structural.ifc"
+#ifc_path = "ifc_files/20210125Prova.ifc"
 start = time.time()  # Culculate time to process
 print("Start!")
 print(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime())))
@@ -24,7 +29,6 @@ nodes = []
 edges = []
 
 f = ifcopenshell.open(ifc_path)
-
 for el in f:
     if el.is_a() == "IfcOwnerHistory":
         continue
@@ -94,7 +98,7 @@ log2 = str(round(time.time() - start)) + "sec.\n" + \
     str(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime()))) + " List creat prosess done"
 
 # Initialize neo4j database
-graph = Graph(auth=('neo4j', 'Neo4j'))  # http://localhost:7474
+graph = Graph( uri=neo4j_uri,auth=(neo4j_username, neo4j_password))  # http://localhost:7474
 graph.delete_all()
 
 for node in nodes:
@@ -140,9 +144,9 @@ print(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime())))
 log3 = str(round(time.time() - start)) + "sec.\n" + \
     str(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime()))) + " All done"
 
-with open("log.text", mode="a") as f:
-    f.write(ifc_path + "\n")
-    f.write("Nodes_" + str(len(nodes)) + " ,Edges_" + str(len(edges)) + "\n")
-    f.write(log1 + "\n")
-    f.write(log2 + "\n")
-    f.write(log3 + "\n\n")
+#with open("log.text", mode="a") as f:
+#    f.write(ifc_path + "\n")
+#    f.write("Nodes_" + str(len(nodes)) + " ,Edges_" + str(len(edges)) + "\n")
+#    f.write(log1 + "\n")
+#    f.write(log2 + "\n")
+#    f.write(log3 + "\n\n")
