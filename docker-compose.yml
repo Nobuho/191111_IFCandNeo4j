@@ -1,0 +1,30 @@
+services:
+
+  database:
+    user: neo4j:neo4j
+    image: neo4j:5.11
+    ports:
+      - 7687:7687
+      - 7474:7474
+    volumes:
+      - $PWD/data:/data
+    environment:
+      - NEO4J_AUTH=${NEO4J_USERNAME-neo4j}/${NEO4J_PASSWORD-password}
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_db_tx__log_rotation_retention__policy=false
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+      - NEO4J_apoc_export_file_enabled=true
+      - NEO4J_apoc_import_file_enabled=true
+      - NEO4J_apoc_import_file_use__neo4j__config=true
+      - NEO4J_AUTH=none
+    healthcheck:
+        test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider localhost:7474 || exit 1"]
+        interval: 15s
+        timeout: 30s
+        retries: 10
+    networks:
+      - net
+
+
+networks:
+  net:

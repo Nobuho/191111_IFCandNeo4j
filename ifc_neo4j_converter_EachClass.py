@@ -5,8 +5,8 @@ import time
 import os
 
 neo4j_username=os.getenv("NEO4J_USERNAME", "neo4j")
-neo4j_password=os.getenv("NEO4J_PASSWORD", "Neo4j")
-neo4j_uri=os.getenv("NEO4J_URI", "http://localhost:7474")
+neo4j_password=os.getenv("NEO4J_PASSWORD", "neo4j")
+neo4j_uri=os.getenv("NEO4J_URI", "bolt://localhost:7687")
 print (neo4j_uri,neo4j_username, neo4j_password)
 def typeDict(key):
 #    f = ifcopenshell.file()
@@ -17,7 +17,8 @@ def typeDict(key):
 start = time.time()  # Culculate time to process
 
 
-ifc_path = "ifc_files/IfcOpenHouse_original.ifc"
+ifc_path = "ifc_files/ronen_Structural.ifc"
+#ifc_path = "ifc_files/20210125Prova.ifc"
 start = time.time()  # Culculate time to process
 print("Start!")
 print(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime())))
@@ -143,9 +144,9 @@ print(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime())))
 log3 = str(round(time.time() - start)) + "sec.\n" + \
     str(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime()))) + " All done"
 
-with open("log.text", mode="a") as f:
-    f.write(ifc_path + "\n")
-    f.write("Nodes_" + str(len(nodes)) + " ,Edges_" + str(len(edges)) + "\n")
-    f.write(log1 + "\n")
-    f.write(log2 + "\n")
-    f.write(log3 + "\n\n")
+#with open("log.text", mode="a") as f:
+#    f.write(ifc_path + "\n")
+#    f.write("Nodes_" + str(len(nodes)) + " ,Edges_" + str(len(edges)) + "\n")
+#    f.write(log1 + "\n")
+#    f.write(log2 + "\n")
+#    f.write(log3 + "\n\n")
